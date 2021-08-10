@@ -28,7 +28,7 @@ bool init(){
     return true;
 }
 
-const GLfloat PI = 3.1415f;
+//const GLfloat PI = 3.1415f;
 /*
 static void _gluPerspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar){
     GLfloat top = zNear * ((GLfloat) tan(fovy * PI / 360.0));
@@ -148,8 +148,8 @@ GLuint createProgram(const char* vertexSource, const char * fragmentSource)
     return program;
 }
 
-GLuint simpleTriangleProgram;
-GLuint simpleTriangleProgram1;
+GLuint shaderProgram;
+GLuint shaderProgram1;
 GLuint vPosition;
 GLuint vColor;
 
@@ -270,18 +270,13 @@ void renderFrame(){
         points.push_back(vertices[j+2][0]);
         points.push_back(vertices[j+2][1]);
 
-        simpleTriangleProgram = createProgram(glVertexShader, glFragmentShader);
-        //if (!simpleTriangleProgram)
-        //{
-        //    LOGE ("Could not create program");
-        //    return false;
-        //}
+        shaderProgram = createProgram(glVertexShader, glFragmentShader);
 
         glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        glUseProgram(simpleTriangleProgram);
+        glUseProgram(shaderProgram);
 
-        vPosition = glGetAttribLocation(simpleTriangleProgram, "vPosition");
-        //vColor = glGetAttribLocation(simpleTriangleProgram, "vColor");
+        vPosition = glGetAttribLocation(shaderProgram, "vPosition");
+        //vColor = glGetAttribLocation(shaderProgram, "vColor");
 
         for (int i = 0; i < points.size()/2; i++){
             //__android_log_print(ANDROID_LOG_INFO, "tag", "count = %d i = %d x = %f y = %f", counter, i, touchPoints[i*2], touchPoints[i*2 + 1]);
@@ -289,18 +284,13 @@ void renderFrame(){
         }
     }
 
-    simpleTriangleProgram1 = createProgram(glVertexShader, glFragmentShaderNew);
-    //if (!simpleTriangleProgram)
-    //{
-    //    LOGE ("Could not create program");
-    //    return false;
-    //}
+    shaderProgram1 = createProgram(glVertexShader, glFragmentShaderNew);
 
     //glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glUseProgram(simpleTriangleProgram1);
+    glUseProgram(shaderProgram1);
 
-    vPosition = glGetAttribLocation(simpleTriangleProgram1, "vPosition");
-    //vColor = glGetAttribLocation(simpleTriangleProgram, "vColor");
+    vPosition = glGetAttribLocation(shaderProgram1, "vPosition");
+    //vColor = glGetAttribLocation(shaderProgram1, "vColor");
 
     glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices);
     //glVertexAttribPointer(vColor, 3, GL_FLOAT, GL_FALSE, 0, colours);
