@@ -28,9 +28,9 @@ bool init(){
     return true;
 }
 
-const GLfloat PI = 3.1415f;
 float screen_width;
 float screen_height;
+//const GLfloat PI = 3.1415f;
 /*
 static void _gluPerspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar){
     GLfloat top = zNear * ((GLfloat) tan(fovy * PI / 360.0));
@@ -144,7 +144,7 @@ GLuint createProgram(const char* vertexSource, const char * fragmentSource)
     return program;
 }
 
-GLuint simpleTriangleProgram;
+GLuint shaderProgram;
 GLuint vPosition;
 GLuint vColor;
 
@@ -200,6 +200,7 @@ void drawRectangle(float x_pixel, float y_pixel){
     glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
     //glFlush();
 }
+
 /* find linear coordinates
 float findYCoord(float x, float preX, float y, float preY, float xcoord){
     float deltaX = x - preX;
@@ -213,6 +214,7 @@ float findXCoord(float x, float preX, float y, float preY, float ycoord){
     return ( preX + (ycoord-preY) * deltaX / deltaY );
 }
 */
+
 float findMidpointT(float x0, float y0, float x1, float y1, float x2, float y2){
     float ac = sqrt(pow(x0-x2, 2) + pow(y0-y2, 2));
     float ab = sqrt(pow(x0-x1, 2) + pow(y0-y1, 2));
@@ -246,18 +248,13 @@ float bezierFunctionY(float t){
 
 void renderFrame(float x, float y, int actionUp){
     LOGI("Enter renderFrame()");
-    simpleTriangleProgram = createProgram(glVertexShader, glFragmentShader);
-    //if (!simpleTriangleProgram)
-    //{
-    //    LOGE ("Could not create program");
-    //    return false;
-    //}
+    shaderProgram = createProgram(glVertexShader, glFragmentShader);
 
     glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glUseProgram(simpleTriangleProgram);
+    glUseProgram(shaderProgram);
 
-    vPosition = glGetAttribLocation(simpleTriangleProgram, "vPosition");
-    //vColor = glGetAttribLocation(simpleTriangleProgram, "vColor");
+    vPosition = glGetAttribLocation(shaderProgram, "vPosition");
+    //vColor = glGetAttribLocation(shaderProgram, "vColor");
 
     __android_log_print(ANDROID_LOG_INFO, "tag", "x = %f y = %f", x, y);
     __android_log_print(ANDROID_LOG_INFO, "tag", "x = %f y = %f", x * 2.0f / screen_width - 1.0f, y * -1.0f / screen_height + 0.875f);
@@ -265,7 +262,8 @@ void renderFrame(float x, float y, int actionUp){
     if (actionUp == 1){
         counter = 0;
     }
-    if (y != 0.0){
+    
+    if (y != 0.0){ //check whether screen is touched
         touchPoints.push_back(x);
         touchPoints.push_back(y);
         int n = touchPoints.size();
@@ -340,6 +338,7 @@ void renderFrame(float x, float y, int actionUp){
         previousY = y;
     }*/
 
+    //draw squares at bezier points
     for (int i = 0; i < touchPointsAll.size()/2; i++){
         drawRectangle(touchPointsAll[i*2], touchPointsAll[i*2 + 1]);
     }
