@@ -26,7 +26,7 @@ bool init(){
     return true;
 }
 
-const GLfloat PI = 3.1415f;
+//const GLfloat PI = 3.1415f;
 /*
 static void _gluPerspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar){
     GLfloat top = zNear * ((GLfloat) tan(fovy * PI / 360.0));
@@ -177,7 +177,7 @@ const GLfloat vvertices[] = {-0.5f, 0.0f,
                              -0.5f, 1.0f};
 */
 
-GLuint simpleTriangleProgram;
+GLuint shaderProgram;
 GLuint vPosition;
 GLuint vColor;
 
@@ -194,19 +194,13 @@ void renderFrame(){
         points[size++] = sin(angle)*0.5f;
     }
     */
-
-    simpleTriangleProgram = createProgram(glVertexShader, glFragmentShader);
-    //if (!simpleTriangleProgram)
-    //{
-    //    LOGE ("Could not create program");
-    //    return false;
-    //}
+    shaderProgram = createProgram(glVertexShader, glFragmentShader);
 
     glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glUseProgram(simpleTriangleProgram);
+    glUseProgram(shaderProgram);
 
-    vPosition = glGetAttribLocation(simpleTriangleProgram, "vPosition");
-    //vColor = glGetAttribLocation(simpleTriangleProgram, "vColor");
+    vPosition = glGetAttribLocation(shaderProgram, "vPosition");
+    //vColor = glGetAttribLocation(shaderProgram, "vColor");
 
     for (int i = 0; i < 2; i++){
         glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, vertices[i]);
@@ -225,7 +219,6 @@ void renderFrame(){
     //glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_BYTE, indexBuffer);
     //glDrawArrays(GL_LINE_STRIP, 0, numSegments);
     //glFlush();
-
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_example_draw2dshapes_MainActivity_resize(JNIEnv* env, jclass obj, jint width, jint height) {
