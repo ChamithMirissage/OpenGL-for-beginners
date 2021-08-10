@@ -24,7 +24,7 @@ bool init(){
     return true;
 }
 
-const GLfloat PI = 3.1415f;
+//const GLfloat PI = 3.1415f;
 /*
 static void _gluPerspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar){
     GLfloat top = zNear * ((GLfloat) tan(fovy * PI / 360.0));
@@ -188,8 +188,8 @@ GLfloat textureCords[] = {0.0f, 1.0f,
                           1.0f, 0.0f,
                           1.0f, 1.0f};
 ///
-GLuint glProgram;
 
+GLuint shaderProgram;
 const int numSegments = 100;
 
 void renderFrame(){
@@ -211,34 +211,19 @@ void renderFrame(){
     }
     ///
 
-    glProgram = createProgram(glVertexShader, glFragmentShader);
-    //if (!simpleTriangleProgram)
-    //{
-    //    LOGE ("Could not create program");
-    //    return false;
-    //}
+    shaderProgram = createProgram(glVertexShader, glFragmentShader);
 
     glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glUseProgram(glProgram);
+    glUseProgram(shaderProgram);
 
-    GLint vertexLocation = glGetAttribLocation(glProgram, "vertexPosition");
-    GLint textureCordLocation = glGetAttribLocation(glProgram, "vertexTextureCord");
-    //GLint projectionLocation = glGetUniformLocation(glProgram, "projection");
-    //GLint modelViewLocation = glGetUniformLocation(glProgram, "modelView");
-    GLint samplerLocation = glGetUniformLocation(glProgram, "texture");
+    GLint vertexLocation = glGetAttribLocation(shaderProgram, "vertexPosition");
+    GLint textureCordLocation = glGetAttribLocation(shaderProgram, "vertexTextureCord");
+    //GLint projectionLocation = glGetUniformLocation(shaderProgram, "projection");
+    //GLint modelViewLocation = glGetUniformLocation(shaderProgram, "modelView");
+    GLint samplerLocation = glGetUniformLocation(shaderProgram, "texture");
 
     /* Load the Texture. */
     GLuint textureId = loadSimpleTexture();
-    /*
-    if(textureId == 0)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-    */
 
     glVertexAttribPointer(vertexLocation, 2, GL_FLOAT, GL_FALSE, 0, points);
     glVertexAttribPointer(textureCordLocation, 2, GL_FLOAT, GL_FALSE, 0, texCoords);
@@ -251,7 +236,6 @@ void renderFrame(){
 
     /* Set the sampler texture unit to 0. */
     glUniform1i(samplerLocation, 0);
-
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, numSegments);
     //glDrawElements(GL_TRIANGLE, 12, GL_UNSIGNED_SHORT, indices);
