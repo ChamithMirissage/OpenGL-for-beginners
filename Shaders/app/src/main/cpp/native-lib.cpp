@@ -22,7 +22,7 @@ bool init(){
     return true;
 }
 
-const GLfloat PI = 3.1415f;
+//const GLfloat PI = 3.1415f;
 /*
 static void _gluPerspective(GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar){
     GLfloat top = zNear * ((GLfloat) tan(fovy * PI / 360.0));
@@ -164,21 +164,15 @@ GLfloat colours[] = {1.0f, 0.0f, 0.0f,
                      0.0f, 1.0f, 0.0f,
                      0.0f, 0.0f, 1.0f};
 
-GLuint simpleTriangleProgram;
+GLuint shaderProgram;
 GLuint vPosition;
 GLuint vColor;
 
 void renderFrame(){
-
-    simpleTriangleProgram = createProgram(glVertexShader, glFragmentShader);
-    //if (!simpleTriangleProgram)
-    //{
-    //    LOGE ("Could not create program");
-    //    return false;
-    //}
+    shaderProgram = createProgram(glVertexShader, glFragmentShader);
 
     glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    glUseProgram(simpleTriangleProgram);
+    glUseProgram(shaderProgram);
 
     vPosition = glGetAttribLocation(simpleTriangleProgram, "vPosition");
     vColor = glGetAttribLocation(simpleTriangleProgram, "vColor");
@@ -191,8 +185,6 @@ void renderFrame(){
 
     glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
     //glDrawElements(GL_TRIANGLE, 12, GL_UNSIGNED_SHORT, indices);
-
-    //glFlush();
 }
 
 extern "C" JNIEXPORT void JNICALL Java_com_example_shaders_MainActivity_resize(JNIEnv* env, jclass obj, jint width, jint height) {
